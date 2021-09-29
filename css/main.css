@@ -5,6 +5,7 @@
 }
 
 body {
+    background-color: #93f8ab;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -43,6 +44,7 @@ button {
     font-family: cursive, sans-serif;
     inline-size: 200px;
     align-self: center;
+    border-radius: 5px;
 }
 
 label {
@@ -55,4 +57,8 @@ label {
     padding: 8px;
     text-align: center;
     font-weight: bold;
+}
+
+.logout{
+    color: #f80404;
 }

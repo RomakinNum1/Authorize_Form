@@ -1,12 +1,16 @@
 <?php
     session_start();
+if($_SESSION['user'])
+{
+    header('Location: profile.php');
+}
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизация и регистрация</title>
+    <title>Регистрация</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -24,9 +28,9 @@
         <input type ="password" name="password" placeholder="Введите пароль">
         <label>Подтвердите пароль</label>
         <input type ="password" name="password_confirm" placeholder="Введите пароль">
-        <button>Зарегистрироваться</button>
+        <button type="submit">Зарегистрироваться</button>
         <p>
-            <a href="/index.php">Авторизоваться</a>
+            <a href="/authorise.php">Авторизоваться</a>
         </p>
         <?php
         if($_SESSION['message'])
