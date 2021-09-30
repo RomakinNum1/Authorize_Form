@@ -32,11 +32,12 @@
 
 
     $password = md5($password);
-    $check = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
+    $check = authorise_connect($login, $password, $connect);
 
-    if(mysqli_num_rows($check) > 0){
-        $user = mysqli_fetch_assoc($check);
-
+    $user = $check->fetch(PDO::FETCH_ASSOC);
+    $check->execute();
+    if($check->fetchColumn() > 0){
+        //$user = $check->fetch(PDO::FETCH_ASSOC);
         $_SESSION['user'] = [
             'id' => $user['id'],
             'full_name' => $user['FIO'],

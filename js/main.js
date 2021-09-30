@@ -1,5 +1,3 @@
-//"includes/signin.php"
-
 // autorise
 
 $('.login-btn').click(function (e){

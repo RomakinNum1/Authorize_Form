@@ -9,8 +9,8 @@
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
-    $check_login = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login'");
-    if(mysqli_num_rows($check_login)>0){
+    $check_login = check_login_connect($login, $connect);
+    if($check_login->fetchColumn()>0){
         $response = [
             "status" => false,
             "type" => 1,
@@ -19,7 +19,6 @@
         ];
 
         echo json_encode($response);
-
         die();
     }
 
@@ -56,7 +55,7 @@
         ];
 
         echo json_encode($response);
-
+        $_SESSION['reg'] = false;
         die();
     }
 
@@ -83,8 +82,9 @@
 
         $password = md5($password);
 
-        mysqli_query($connect, "INSERT INTO `users` (`id`, `FIO`, `email`, `login`, `password`, `avatar`) 
-        VALUES (NULL, '$full_name', '$email', '$login', '$password', '$path')");
+        $state = insert_connect($full_name, $email, $login, $password, $path, $connect);
+
+        $state->execute();
 
         $response = [
             "status" => true,
@@ -101,7 +101,7 @@
             "message" => "Пароли не совпадают!",
             "fields" => ['password', 'password_confirm']
         ];
-
+        $_SESSION['reg'] = false;
         echo json_encode($response);
     }
 ?>
