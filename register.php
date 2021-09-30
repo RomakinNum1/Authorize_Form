@@ -12,10 +12,14 @@ if($_SESSION['user'])
     <meta charset="UTF-8">
     <title>Регистрация</title>
     <link rel="stylesheet" href="css/main.css">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <form action="includes/signup.php" method="post" enctype="multipart/form-data">
+    <form>
         <label>ФИО</label>
         <input type ="text" name ="full_name" placeholder="Введите ФИО">
         <label>Почта</label>
@@ -28,19 +32,16 @@ if($_SESSION['user'])
         <input type ="password" name="password" placeholder="Введите пароль">
         <label>Подтвердите пароль</label>
         <input type ="password" name="password_confirm" placeholder="Введите пароль">
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit" class="reg-btn">Зарегистрироваться</button>
         <p>
             <a href="/authorise.php">Авторизоваться</a>
         </p>
-        <?php
-        if($_SESSION['message'])
-        {
-            echo '<p class="message"> ' . $_SESSION['message'] . ' </p>';
-        }
-        unset($_SESSION['message']);
-        ?>
+        <p class="message none"> lol </p>
+
 
     </form>
+
+    <script src = "js/main.js"></script>
 
 </body>
 </html>

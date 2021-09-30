@@ -62,3 +62,11 @@ label {
 .logout{
     color: #f80404;
 }
+
+.none{
+    display: none;
+}
+
+.error{
+    border: 2px solid #f80404;
+}
