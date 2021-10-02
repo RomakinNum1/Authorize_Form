@@ -1,107 +1,74 @@
 <?php
-    session_start();
-    require_once 'connect.php';
-    global $connect;
+require_once 'database.php';
+require_once 'constants.php';
 
-    $full_name = $_POST['full_name'];
-    $login = $_POST['login'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $password_confirm = $_POST['password_confirm'];
+App::Volumes();
 
-    $check_login = check_login_connect($login, $connect);
-    if($check_login->fetchColumn()>0){
-        $response = [
-            "status" => false,
-            "type" => 1,
-            "message" => "Пользователь с таким логином уже существует!",
-            "fields"=> ['login']
-        ];
+if (App::SelectLogin($data['login'])){//($user) {
+    $response = [
+        "status" => false,
+        "type" => ERROR_ON_INPUTS,
+        "message" => "Пользователь с таким логином уже существует!",
+        "fields" => ['login']
+    ];
 
-        echo json_encode($response);
-        die();
-    }
+    echo json_encode($response);
+    die();
+}
 
-    $error_fields =[];
+$errorFields = [];
 
-    if($login === '')
-    {
-        $error_fields[] = 'login';
-    }
-    if($password === '')
-    {
-        $error_fields[] = 'password';
-    }
-    if($full_name === '')
-    {
-        $error_fields[] = 'full_name';
-    }
-    if($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL))
-    {
-        $error_fields[] = 'email';
-    }
-    if($password_confirm === '')
-    {
-        $error_fields[] = 'password_confirm';
-    }
+if ($data['login'] === '') {
+    $errorFields[] = 'login';
+}
+if ($data['password'] === '') {
+    $errorFields[] = 'password';
+}
+if ($data['full_name'] === '') {
+    $errorFields[] = 'full_name';
+}
+if ($data['email'] === '' || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+    $errorFields[] = 'email';
+}
+if ($data['password_confirm'] === '') {
+    $errorFields[] = 'password_confirm';
+}
 
-    if(!empty($error_fields))
-    {
-        $response = [
-            "status" => false,
-            "type" => 1,
-            "message" => "Проверьте правильность полей",
-            "fields" => $error_fields
-        ];
+if (!empty($errorFields)) {
+    $response = [
+        "status" => false,
+        "type" => ERROR_ON_INPUTS,
+        "message" => "Проверьте правильность полей",
+        "fields" => $errorFields
+    ];
 
-        echo json_encode($response);
-        $_SESSION['reg'] = false;
-        die();
-    }
+    echo json_encode($response);
+    $_SESSION['reg'] = false;
+    die();
+}
 
-    if($password === $password_confirm)
-    {
-        $path = 'uploads/' . time() . $_FILES['avatar']['name'];
-        if($_FILES['avatar']['name']) {
-            if (!move_uploaded_file($_FILES['avatar']['tmp_name'], '../' . $path)) {
-                //$_SESSION['message'] = 'Ошибка при загрузке изображения';
-                //header('Location: ../register.php');
+if ($data['password'] != $data['password_confirm']) {
+    $response = [
+        "status" => false,
+        "type" => ERROR_ON_INPUTS,
+        "message" => "Пароли не совпадают!",
+        "fields" => ['password', 'password_confirm']
+    ];
+    $_SESSION['reg'] = false;
+    echo json_encode($response);
+}
 
-                $response = [
-                    "status" => false,
-                    "type" => 2,
-                    "message" => "Ошибка при загрузке аватарки"
-                ];
+if ($data['password'] === $data['password_confirm']) {
 
-                echo json_encode($response);
+    $data['password'] = md5($data['password']);
 
-                die();
-            }
-        }
-        else $path = null;
+    App::Insert();
 
-        $password = md5($password);
+    $response = [
+        "status" => true,
+        "message" => "Регистрация прошла успешно!"
+    ];
 
-        $state = insert_connect($full_name, $email, $login, $password, $path, $connect);
-
-        $state->execute();
-
-        $response = [
-            "status" => true,
-            "message" => "Регистрация прошла успешно!"
-        ];
-
-        echo json_encode($response);
-
-    }
-    else{
-        $response = [
-            "status" => false,
-            "type" => 1,
-            "message" => "Пароли не совпадают!",
-            "fields" => ['password', 'password_confirm']
-        ];
-        $_SESSION['reg'] = false;
-        echo json_encode($response);
-    }
+    echo json_encode($response);
+}
 ?>

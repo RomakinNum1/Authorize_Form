@@ -1,6 +1,6 @@
 // autorise
 
-$('.login-btn').click(function (e){
+$('button[id="login-btn"]').click(function (e) {
 
     e.preventDefault();
 
@@ -10,35 +10,34 @@ $('.login-btn').click(function (e){
     let password = $('input[name ="password"]').val();
 
     $.ajax({
-       url: 'includes/signin.php',
-       type: 'POST',
-       dataType: 'json',
-       data:{
-           login: login,
-           password: password
-       },
+        url: 'includes/signin.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            login: login,
+            password: password
+        },
 
-        success (data){
+        success(data) {
 
-           if(data.status){
-               document.location.href ='/profile.php';
-           }
-           else{
-               if(data.type === 1){
-                    data.fields.forEach(function (field){
-                       $(`input[name='${field}']`).addClass('error')
+            if (data.status) {
+                document.location.href = '/profile.php';
+            } else {
+                if (data.type === 1) {
+                    data.fields.forEach(function (field) {
+                        $(`input[name='${field}']`).addClass('error')
                     });
-               }
+                }
 
-            $('.message').removeClass('none').text(data.message);
+                $('.message').removeClass('none').text(data.message);
+            }
         }
-       }
     });
 });
 
 //registration
 
-$('.reg-btn').click(function (e){
+$('button[id="reg-btn"]').click(function (e) {
 
     e.preventDefault();
 
@@ -56,7 +55,7 @@ $('.reg-btn').click(function (e){
     formData.append('email', email);
     formData.append('password', password);
     formData.append('password_confirm', password_confirm);
-    formData.append('avatar', avatar);
+    //formData.append('avatar', avatar);
 
     $.ajax({
         url: 'includes/signup.php',
@@ -67,14 +66,13 @@ $('.reg-btn').click(function (e){
         cache: false,
         data: formData,
 
-        success (data){
+        success(data) {
 
-            if(data.status){
-                document.location.href ='/authorise.php';
-            }
-            else{
-                if(data.type === 1){
-                    data.fields.forEach(function (field){
+            if (data.status) {
+                document.location.href = '/authorise.php';
+            } else {
+                if (data.type === 1) {
+                    data.fields.forEach(function (field) {
                         $(`input[name='${field}']`).addClass('error')
                     });
                 }
@@ -87,9 +85,9 @@ $('.reg-btn').click(function (e){
 
 // avatar give
 
-let avatar = false;
+/*let avatar = false;
 
 $('input[name = "avatar"]').change(function (e) {
     avatar = e.target.files[0];
-});
+});*/
 

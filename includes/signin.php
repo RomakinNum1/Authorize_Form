@@ -1,64 +1,52 @@
 <?php
-    session_start();
-    require_once 'connect.php';
+require_once 'database.php';
+require_once 'constants.php';
 
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-    global $connect;
+//$login = $_POST['login'];
+//$password = $_POST['password'];
+global $connect;
 
-    $error_fields =[];
+App::Volumes();
 
-    if($login === '')
-    {
-        $error_fields[] = 'login';
-    }
-    if($password === '')
-    {
-        $error_fields[] = 'password';
-    }
-    if(!empty($error_fields))
-    {
-        $response = [
-            "status" => false,
-            "type" => 1,
-            "message" => "Проверьте правильность полей",
-            "fields" => $error_fields
-        ];
+$error_fields = [];
 
-        echo json_encode($response);
+if ($data['login'] === '') {
+    $error_fields[] = 'login';
+}
+if ($data['password'] === '') {
+    $error_fields[] = 'password';
+}
+if (!empty($error_fields)) {
+    $response = [
+        "status" => false,
+        "type" => ERROR_ON_INPUTS,
+        "message" => "Проверьте правильность полей",
+        "fields" => $error_fields
+    ];
 
-        die();
-    }
+    echo json_encode($response);
 
+    die();
+}
 
-    $password = md5($password);
-    $check = authorise_connect($login, $password, $connect);
+if ((App::SelectLoginAndPassword($data['login'], $data['password'])>0)) {
+    //$user = $check->fetch(PDO::FETCH_ASSOC);
+    $_SESSION['user'] = [
+        'id' => $data['id'],
+        'full_name' => $data['FIO'],
+        'email' => $data['email']
+    ];
 
-    $user = $check->fetch(PDO::FETCH_ASSOC);
-    $check->execute();
-    if($check->fetchColumn() > 0){
-        //$user = $check->fetch(PDO::FETCH_ASSOC);
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'full_name' => $user['FIO'],
-            'avatar' => $user['avatar'],
-            'email' => $user['email']
-        ];
+    $response = [
+        "status" => true
+    ];
 
-        $response = [
-            "status" => true
-        ];
+    //header('Location: ../profile.php');
 
-        //header('Location: ../profile.php');
-        echo json_encode($response);
-
-    }else{
-        //$_SESSION['message'] = 'Неверный логин или пароль!';
-        //header('Location: ../authorise.php');
-
-        $response = [
-            "status" => false,
-            "message" => "Неверный логин или пароль"
-        ];
-        echo json_encode($response);
-    }
+} else {
+    $response = [
+        "status" => false,
+        "message" => "Неверный логин или пароль"
+    ];
+}
+echo json_encode($response);

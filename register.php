@@ -4,44 +4,6 @@ if($_SESSION['user'])
 {
     header('Location: profile.php');
 }
+
+require_once "temp/register-temp.html";
 ?>
-
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Регистрация</title>
-    <link rel="stylesheet" href="css/main.css">
-    <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"></script>
-</head>
-<body>
-
-    <form>
-        <label>ФИО</label>
-        <input type ="text" name ="full_name" placeholder="Введите ФИО">
-        <label>Почта</label>
-        <input type ="email" name="email" placeholder="Введите адрес электронной почты">
-        <label>Изображение профиля</label>
-        <input type ="file" name="avatar">
-        <label>Логин</label>
-        <input type ="text" name="login" placeholder="Введите логин">
-        <label>Пароль</label>
-        <input type ="password" name="password" placeholder="Введите пароль">
-        <label>Подтвердите пароль</label>
-        <input type ="password" name="password_confirm" placeholder="Введите пароль">
-        <button type="submit" class="reg-btn">Зарегистрироваться</button>
-        <p>
-            <a href="/authorise.php">Авторизоваться</a>
-        </p>
-        <p class="message none"> lol </p>
-
-
-    </form>
-
-    <script src = "js/main.js"></script>
-
-</body>
-</html>
