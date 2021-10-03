@@ -2,9 +2,9 @@
 require_once 'database.php';
 require_once 'constants.php';
 
-App::Volumes();
+App::VolumesSet();
 
-if (App::SelectLogin($data['login'])){//($user) {
+if (App::Select(SELECT_USER)){//($user) {
     $response = [
         "status" => false,
         "type" => ERROR_ON_INPUTS,
@@ -62,7 +62,7 @@ if ($data['password'] === $data['password_confirm']) {
 
     $data['password'] = md5($data['password']);
 
-    App::Insert();
+    App::Insert(INSERT);
 
     $response = [
         "status" => true,

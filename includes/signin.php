@@ -6,7 +6,7 @@ require_once 'constants.php';
 //$password = $_POST['password'];
 global $connect;
 
-App::Volumes();
+App::VolumesSet();
 
 $error_fields = [];
 
@@ -28,8 +28,9 @@ if (!empty($error_fields)) {
 
     die();
 }
+$data = App::Select(SELECT_USER_PASSWORD);
 
-if ((App::SelectLoginAndPassword($data['login'], $data['password'])>0)) {
+if ($data > 0) {
     //$user = $check->fetch(PDO::FETCH_ASSOC);
     $_SESSION['user'] = [
         'id' => $data['id'],
@@ -40,8 +41,6 @@ if ((App::SelectLoginAndPassword($data['login'], $data['password'])>0)) {
     $response = [
         "status" => true
     ];
-
-    //header('Location: ../profile.php');
 
 } else {
     $response = [
