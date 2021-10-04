@@ -49,12 +49,12 @@ $('button[id="reg-btn"]').click(function (e) {
     let password = $('input[name ="password"]').val();
     let password_confirm = $('input[name ="password_confirm"]').val();
 
-    let formData = new FormData();
-    formData.append('login', login);
-    formData.append('full_name', full_name);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('password_confirm', password_confirm);
+    //let formData = new FormData();
+    //formData.append('login', login);
+    //formData.append('full_name', full_name);
+    //formData.append('email', email);
+    //formData.append('password', password);
+    //formData.append('password_confirm', password_confirm);
     //formData.append('avatar', avatar);
 
     $.ajax({
@@ -64,7 +64,13 @@ $('button[id="reg-btn"]').click(function (e) {
         processData: false, //для отправки аватарки
         contentType: false,
         cache: false,
-        data: formData,
+        data: {
+            login: login,
+            password: password,
+            full_name: full_name,
+            email: email,
+            password_confirm: password_confirm
+        },
 
         success(data) {
 

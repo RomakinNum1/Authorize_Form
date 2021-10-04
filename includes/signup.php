@@ -4,7 +4,7 @@ require_once 'constants.php';
 
 App::VolumesSet();
 
-if (App::Select(SELECT_USER)){//($user) {
+if (App::Select1(SELECT_USER)){//($user) {
     $response = [
         "status" => false,
         "type" => ERROR_ON_INPUTS,

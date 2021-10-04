@@ -24,6 +24,17 @@ class App
         return $user;
     }
 
+    static function Select1($sql)
+    {
+        global $data;
+        global $connect;
+        $checkLogin = $connect->prepare($sql);
+        $checkLogin->execute(array(':login' => $data['login']));
+        $user = $checkLogin->fetch(PDO::FETCH_ASSOC);
+
+        return $user;
+    }
+
     static function Insert($sql)
     {
         global $data;
